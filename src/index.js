@@ -44,13 +44,13 @@ app.get("/findColleges", async (req, res)=>{
         });    
     }
     if(!isNullOrUndefined(minPackage) && minPackage > 0){
-        const listOfminPackage = await connection.find({minPackage:{$regex:minPackage,$options:"$i"}});
+        const listOfminPackage = await connection.find({minPackage:{$gte : minPackage}});
         listOfminPackage.forEach(element => {
             result.push(element);
         });    
     }
     if(!isNullOrUndefined(maxFees) && maxFees > 0){
-        const listOfmaxFees = await connection.find({maxFees:{$regex:maxFees,$options:"$i"}});
+        const listOfmaxFees = await connection.find({maxFees:{$lte : maxFees}});
         listOfmaxFees.forEach(element => {
             result.push(element);
         });    
@@ -62,7 +62,7 @@ app.get("/findColleges", async (req, res)=>{
         });    
     }
     if(!isNullOrUndefined(exams)){
-        const listOfexams = await connection.find({exams:{$regex:exams,$options:"$i"}});
+        const listOfexams = await connection.find({exam:{$regex:exams,$options:"$i"}});
         listOfexams.forEach(element => {
             result.push(element);
         });    
