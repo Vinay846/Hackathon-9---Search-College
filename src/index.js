@@ -7,7 +7,7 @@ const port = 8080
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 const { connections } = require('mongoose');
-const { connection } = require('./connector')
+const { connection } = require('./connector');
 
 const isNullOrUndefined = val => val === null || val === undefined;
 
@@ -20,6 +20,11 @@ app.get("/findColleges", async (req, res)=>{
     const course = req.query.course;
     const exams = req.query.exams;
     let result = [];
+    if(isNullOrUndefined(name) && isNullOrUndefined(state) && isNullOrUndefined(city) && isNullOrUndefined(minPackage) &&
+    isNullOrUndefined(maxFees) && isNullOrUndefined(course) && isNullOrUndefined(exams)){
+        res.send(await connection.find());
+    }
+
     if(!isNullOrUndefined(name)){
         const listOfName = await connection.find({name:{$regex:name,$options:"$i"}});
         listOfName.forEach(element => {
@@ -38,13 +43,13 @@ app.get("/findColleges", async (req, res)=>{
             result.push(element);
         });    
     }
-    if(!isNullOrUndefined(minPackage)){
+    if(!isNullOrUndefined(minPackage) && minPackage > 0){
         const listOfminPackage = await connection.find({minPackage:{$regex:minPackage,$options:"$i"}});
         listOfminPackage.forEach(element => {
             result.push(element);
         });    
     }
-    if(!isNullOrUndefined(maxFees)){
+    if(!isNullOrUndefined(maxFees) && maxFees > 0){
         const listOfmaxFees = await connection.find({maxFees:{$regex:maxFees,$options:"$i"}});
         listOfmaxFees.forEach(element => {
             result.push(element);
@@ -57,17 +62,13 @@ app.get("/findColleges", async (req, res)=>{
         });    
     }
     if(!isNullOrUndefined(exams)){
-        console.log(exams);
         const listOfexams = await connection.find({exams:{$regex:exams,$options:"$i"}});
         console.log(listOfexams);
         listOfexams.forEach(element => {
-            console.log(element);
             result.push(element);
         });    
-        console.log("called");
     }
-    // console.log(result);
-    res.send(result);
+    res.send([...new Set(result)]);
 })
 
 
