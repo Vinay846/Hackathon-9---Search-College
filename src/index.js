@@ -63,7 +63,6 @@ app.get("/findColleges", async (req, res)=>{
     }
     if(!isNullOrUndefined(exams)){
         const listOfexams = await connection.find({exams:{$regex:exams,$options:"$i"}});
-        console.log(listOfexams);
         listOfexams.forEach(element => {
             result.push(element);
         });    
