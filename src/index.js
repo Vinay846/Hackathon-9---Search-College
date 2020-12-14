@@ -31,7 +31,7 @@ app.get("/findColleges", async (req, res)=>{
         }else if(key === 'city'){
             combineQuery.push({city: {$regex: req.query[key], $options:"i"}});
         }else if(key === 'minPackage'){
-            combineQuery.push(find({minPackage:{$gte : parseFloat(req.query[key])}}));
+            combineQuery.push({minPackage:{$gte : parseFloat(req.query[key])}});
         }else if(key === 'maxFees'){
             combineQuery.push({maxFees:{$lte : parseFloat(req.query[key])}});
         }else if(key === 'course'){
