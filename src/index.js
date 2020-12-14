@@ -18,7 +18,7 @@ app.get("/findColleges", async (req, res)=>{
     const minPackage = req.query.minPackage;
     const maxFees = req.query.maxFees;
     const course = req.query.course;
-    const exams = req.query.exams;
+    const exam = req.query.exam;
     let result = [];
     if(isNullOrUndefined(name) && isNullOrUndefined(state) && isNullOrUndefined(city) && isNullOrUndefined(minPackage) &&
     isNullOrUndefined(maxFees) && isNullOrUndefined(course) && isNullOrUndefined(exams)){
@@ -61,8 +61,8 @@ app.get("/findColleges", async (req, res)=>{
             result.push(element);
         });    
     }
-    if(!isNullOrUndefined(exams)){
-        const listOfexams = await connection.find({exam:{$regex:exams,$options:"$i"}});
+    if(!isNullOrUndefined(exam)){
+        const listOfexams = await connection.find({exam:{$regex:exam,$options:"$i"}});
         listOfexams.forEach(element => {
             result.push(element);
         });    
