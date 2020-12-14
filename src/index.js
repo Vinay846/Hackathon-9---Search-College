@@ -31,9 +31,9 @@ app.get("/findColleges", async (req, res)=>{
         }else if(key === 'city'){
             combineQuery.push({city: {$regex: req.query[key], $options:"i"}});
         }else if(key === 'minPackage'){
-            combineQuery.push(find({minPackage:{$gte : minPackage}}));
+            combineQuery.push(find({minPackage:{$gte : parseFloat(req.query[key])}}));
         }else if(key === 'maxFees'){
-            combineQuery.push({maxFees:{$lte : maxFees}});
+            combineQuery.push({maxFees:{$lte : parseFloat(req.query[key])}});
         }else if(key === 'course'){
             combineQuery.push({course: {$regex: req.query[key], $options:"i"}});
         }else if(key === 'exam'){
@@ -70,13 +70,13 @@ app.get("/findColleges", async (req, res)=>{
             });    
         }
         if(!isNullOrUndefined(minPackage) && minPackage > 0){
-            const listOfminPackage = await connection.find({minPackage:{$gte : minPackage}});
+            const listOfminPackage = await connection.find({minPackage:{$gte : parseFloat(minPackage)}});
             listOfminPackage.forEach(element => {
                 result.push(element);
             });    
         }
         if(!isNullOrUndefined(maxFees) && maxFees > 0){
-            const listOfmaxFees = await connection.find({maxFees:{$lte : maxFees}});
+            const listOfmaxFees = await connection.find({maxFees:{$lte : parseFloat(maxFees)}});
             listOfmaxFees.forEach(element => {
                 result.push(element);
             });    
