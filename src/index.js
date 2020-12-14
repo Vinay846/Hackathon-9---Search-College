@@ -57,43 +57,43 @@ app.get("/findColleges", async (req, res)=>{
                 result.push(element);
             });    
         }
-        if(!isNullOrUndefined(state)){
+        else if(!isNullOrUndefined(state)){
             const listOfstate = await connection.find({state:{$regex:state,$options:"$i"}});
             listOfstate.forEach(element => {
                 result.push(element);
             });    
         }
-        if(!isNullOrUndefined(city)){
+        else if(!isNullOrUndefined(city)){
             const listOfcity = await connection.find({city:{$regex:city,$options:"$i"}});
             listOfcity.forEach(element => {
                 result.push(element);
             });    
         }
-        if(!isNullOrUndefined(minPackage) && minPackage > 0){
+        else if(!isNullOrUndefined(minPackage) && minPackage > 0){
             const listOfminPackage = await connection.find({minPackage:{$gte : parseFloat(minPackage)}});
             listOfminPackage.forEach(element => {
                 result.push(element);
             });    
         }
-        if(!isNullOrUndefined(maxFees) && maxFees > 0){
+        else if(!isNullOrUndefined(maxFees) && maxFees > 0){
             const listOfmaxFees = await connection.find({maxFees:{$lte : parseFloat(maxFees)}});
             listOfmaxFees.forEach(element => {
                 result.push(element);
             });    
         }
-        if(!isNullOrUndefined(course)){
+        else if(!isNullOrUndefined(course)){
             const listOfcourse = await connection.find({course:{$regex:course,$options:"$i"}});
             listOfcourse.forEach(element => {
                 result.push(element);
             });    
         }
-        if(!isNullOrUndefined(exam)){
+        else if(!isNullOrUndefined(exam)){
             const listOfexams = await connection.find({exam:{$regex:exam,$options:"$i"}});
             listOfexams.forEach(element => {
                 result.push(element);
             });    
         }
-        res.send([...new Set(result)]);
+        res.send(result);
     }
 
 })
