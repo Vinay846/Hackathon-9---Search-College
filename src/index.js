@@ -20,7 +20,35 @@ app.get("/findColleges", async (req, res)=>{
     const course = req.query.course;
     const exam = req.query.exam;
     let result = [];
-    if(isNullOrUndefined(name) && isNullOrUndefined(state) && isNullOrUndefined(city) && isNullOrUndefined(minPackage) && isNullOrUndefined(maxFees) && isNullOrUndefined(course) && isNullOrUndefined(exam)){
+    let combineQuery = [];
+
+    for(let key in req.query){
+        if(key === 'name'){
+            combineQuery.push({name: {$regex: req.query[key], $options:"i"}});
+        }
+        else if(key === 'state'){
+            combineQuery.push({state: {$regex: req.query[key], $options:"i"}});
+        }else if(key === 'city'){
+            combineQuery.push({city: {$regex: req.query[key], $options:"i"}});
+        }else if(key === 'minPackage'){
+            combineQuery.push(find({minPackage:{$gte : minPackage}}));
+        }else if(key === 'maxFees'){
+            combineQuery.push({maxFees:{$lte : maxFees}});
+        }else if(key === 'course'){
+            combineQuery.push({course: {$regex: req.query[key], $options:"i"}});
+        }else if(key === 'exam'){
+            combineQuery.push({exam: {$regex: req.query[key], $options:"i"}});
+        }
+    }
+
+    if(Object.keys(req.query).length > 1){
+        const listOfCombinCollege = await connection.find({$and: combineQuery})
+        listOfCombinCollege.forEach(element =>{
+            result.push(element);
+        })
+        res.send(result);
+    }
+    else if(isNullOrUndefined(name) && isNullOrUndefined(state) && isNullOrUndefined(city) && isNullOrUndefined(minPackage) && isNullOrUndefined(maxFees) && isNullOrUndefined(course) && isNullOrUndefined(exam)){
         res.send(await connection.find());
     }else{
         if(!isNullOrUndefined(name)){
